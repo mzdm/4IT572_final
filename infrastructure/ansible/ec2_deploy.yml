@@ -1,0 +1,84 @@
+- name: Deploy to EC2
+  hosts: localhost
+  connection: local
+  collections:
+    - amazon.aws
+  vars_files:
+    - ./group_vars/all/aws.yml
+  tasks:
+    - name: Launch EC2 Instance
+      amazon.aws.ec2_instance:
+        key_name: 4IT572-DevOps
+        instance_type: t2.micro
+        image:
+          id: ami-0b0dcb5067f052a63
+        region: us-east-1
+        wait: yes
+        security_group: eshop
+        network:
+          assign_public_ip: yes
+        count: 1
+        state: "running"
+        vpc_subnet_id: subnet-02307408fd4f766c1
+        aws_access_key: "{{ aws_access_key }}"
+        aws_secret_key: "{{ aws_secret_key }}"
+        security_token: "{{ session_token }}"
+      register: ec2
+
+    - name: Add instance to host group
+      add_host:
+        hostname: "{{ item.public_ip_address }}"
+        groupname: launched
+      loop: "{{ ec2.instances }}"
+
+    - name: Wait for SSH connection
+      delegate_to: "{{ item.public_dns_name }}"
+      wait_for_connection:
+        delay: 40
+        timeout: 300
+      loop: "{{ ec2.instances }}"
+
+- name: Configure EC
+  hosts: launched
+  connection: ssh
+  tasks:
+    - name: Install git and Docker
+      yum:
+        name:
+          - git
+          - docker
+        state: latest
+        update_cache: yes
+      become: yes
+
+    - service:
+        name: docker
+        state: started
+        enabled: yes
+      become: yes
+
+    - name: Start Docker on startup
+      shell: systemctl enable docker
+      become: yes
+
+    - name: Set rights for Docker
+      shell: usermod -a -G docker ec2-user
+      become: yes
+
+    - name: Clone repository
+      git:
+        repo: 'https://github.com/mzdm/4IT572_final.git'
+        dest: ./app
+
+    - name: Build Docker image
+      shell: cd ./app/frontend && docker build -t myeshop:latest .
+      become: yes
+
+    - name: Run eshop
+      shell: docker run -p 80:3000 myeshop
+      async: 45
+      poll: 0
+      become: yes
+
+    - wait_for:
+        port: 80

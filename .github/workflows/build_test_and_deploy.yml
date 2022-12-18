@@ -93,3 +93,34 @@ jobs:
       - name: Run tests
         run: |
           npm run test
+
+  deploy:
+    needs: [ build, test ]
+    if: ${{ github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "${{ env.WORKING_DIR_INFRA }}/ansible"
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install ansible
+        run: pip3 install ansible boto boto3
+
+      - name: Export ssh private key & vault password
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > 4IT572-DevOps.pem
+          chmod 400 4IT572-DevOps.pem
+          echo "${{ secrets.VAULT_PASSWORD }}" > .vault_pass
+
+      - name: Deploy via Ansible
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
+        run: |
+          ansible-playbook ec2_deploy.yml --key-file 4IT572-DevOps.pem --vault-password-file .vault_pass --user ec2-user --verbose
