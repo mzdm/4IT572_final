@@ -110,7 +110,7 @@ jobs:
           python-version: '3.9'
 
       - name: Install ansible
-        run: pip3 install boto boto3
+        run: pip3 install ansible boto boto3
 
       - name: Deploy via Ansible
         uses: dawidd6/action-ansible-playbook@v2
