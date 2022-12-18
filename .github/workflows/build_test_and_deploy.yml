@@ -95,10 +95,8 @@ jobs:
           npm run test
 
   deploy:
-#    needs: [ build, test ]
-#    if: ${{ github.ref == 'refs/heads/master' }}
-#    needs: [ build ]
-    if: ${{ github.ref == 'refs/heads/testing' }}
+    needs: [ build, test ]
+    if: ${{ github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -115,11 +113,6 @@ jobs:
       - name: Install ansible
         run: pip3 install ansible boto boto3
 
-#      - name: Export ssh private key
-#        run: |
-#          echo "${{ secrets.SSH_PRIVATE_KEY }}" > .4IT572-DevOps.pem
-#          chmod 400 .4IT572-DevOps.pem
-
       - name: Export ssh private key & vault password
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > 4IT572-DevOps.pem
@@ -131,18 +124,3 @@ jobs:
           ANSIBLE_HOST_KEY_CHECKING: False
         run: |
           ansible-playbook ec2_deploy.yml --key-file 4IT572-DevOps.pem --vault-password-file .vault_pass --user ec2-user --verbose
-
-#      - name: Deploy via Ansible
-#        uses: dawidd6/action-ansible-playbook@v2
-#        with:
-#          playbook: ec2_deploy.yml
-#          directory: "${{ env.WORKING_DIR_INFRA }}/ansible"
-#          requirements: requirements.yml
-#          inventory: |
-#            [defaults]
-#            host_key_checking = False
-#          vault_password: ${{secrets.VAULT_PASSWORD}}
-#          options: |
-#            --user ec2-user
-#            --key-file .4IT572-DevOps.pem
-#            --verbose
