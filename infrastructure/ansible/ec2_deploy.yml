@@ -14,9 +14,8 @@
           id: ami-0b0dcb5067f052a63
         region: us-east-1
         wait: yes
-        security_group: eshop
-        network:
-          assign_public_ip: yes
+        group: eshop
+        assign_public_ip: yes
         count: 1
         vpc_subnet_id: subnet-02307408fd4f766c1
         aws_access_key: "{{ aws_access_key }}"
@@ -26,7 +25,7 @@
 
     - name: Add instance to host group
       add_host:
-        hostname: "{{ item.public_ip_address }}"
+        hostname: "{{ item.public_ip }}"
         groupname: launched
       loop: "{{ ec2.instances }}"
 
