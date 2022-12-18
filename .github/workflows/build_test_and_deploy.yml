@@ -24,7 +24,7 @@ jobs:
       - name: Cache Node modules
         uses: actions/cache@v3
         with:
-          path: {{ env.WORKING_DIR_FE }}/node_modules
+          path: "**/node_modules"
           key: node_modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: node_modules-
 
@@ -50,7 +50,7 @@ jobs:
       - name: Cache Node modules
         uses: actions/cache@v3
         with:
-          path: node_modules
+          path: "**/node_modules"
           key: node_modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Build
@@ -64,8 +64,8 @@ jobs:
         with:
           path: |
             ~/.npm
-            ./node_modules
-            ./build
+            ${{ env.WORKING_DIR_FE }}/node_modules
+            ${{ env.WORKING_DIR_FE }}/build
           key: ${{ runner.os }}-build-${{ github.run_id }}
           restore-keys: ${{ runner.os }}-build-${{ github.run_id }}
 
@@ -87,7 +87,7 @@ jobs:
       - name: Cache Node modules
         uses: actions/cache@v3
         with:
-          path: node_modules
+          path: "**/node_modules"
           key: node_modules-${{ hashFiles('**/package-lock.json') }}
 
       - name: Run tests
