@@ -13,4 +13,6 @@ s využitím našeho e-shopu, GitHub Actions, Docker a Ansible **sestavit pipeli
         - [x] nasadí eshop pomocí Ansible na EC2.
         - [x] Po doběhnutí GHA workflow z masteru se vám tedy pokaždé vytvoří nová instance EC2, **zůstane vám tam ale i ta stará**.
         - [ ] Poslední částí toho úkolu je **automatické mazání té staré instance**. To zajistíte jako další krok ve vašem Ansible playbooku.
+             
+        - Works partially - it lists instances but does not terminate them.
 - [x] Při vypracování projektu chci abyste dbali na správnou práci s klíči a pem klíčem do AWS. Kdo bude mít všechny tyto věci v hardcodované a pem v repozitáři, bude za to penalizován 5body.
