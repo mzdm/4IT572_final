@@ -109,7 +109,7 @@ jobs:
         with:
           playbook: ec2_deploy.yml
           directory: "${{ env.WORKING_DIR_INFRA }}/ansible"
-          requirements: "${{ env.WORKING_DIR_INFRA }}/ansible/requirements.yml"
+          requirements: requirements.yml
           key: ${{secrets.SSH_PRIVATE_KEY}}
           vault_password: ${{secrets.VAULT_PASSWORD}}
           options: |
