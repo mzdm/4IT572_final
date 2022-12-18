@@ -95,8 +95,8 @@ jobs:
           npm run test
 
   deploy:
-#    needs: [ build, test ]
-    if: ${{ github.ref == 'refs/heads/testing3' }}
+    needs: [ build, test ]
+    if: ${{ github.ref == 'refs/heads/master' }}
     runs-on: ubuntu-latest
     defaults:
       run:
