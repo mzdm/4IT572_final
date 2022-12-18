@@ -142,5 +142,5 @@ jobs:
           vault_password: ${{secrets.VAULT_PASSWORD}}
           options: |
             --user ec2-user
-            --key-file .4IT572-DevOps.pem
+            --key-file "${{ env.WORKING_DIR_INFRA }}/ansible/.4IT572-DevOps.pem"
             --verbose
