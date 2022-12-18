@@ -127,8 +127,10 @@ jobs:
           echo "${{ secrets.VAULT_PASSWORD }}" > .vault_pass.txt
 
       - name: Deploy via Ansible
+        env:
+          ANSIBLE_HOST_KEY_CHECKING: False
         run: |
-          ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook ec2_deploy.yml --key-file .4IT572-DevOps.pem --vault-password-file .vault_pass.txt --user ec2-user --verbose
+          ansible-playbook ec2_deploy.yml --key-file .4IT572-DevOps.pem --vault-password-file .vault_pass.txt --user ec2-user --verbose
 
 #      - name: Deploy via Ansible
 #        uses: dawidd6/action-ansible-playbook@v2
