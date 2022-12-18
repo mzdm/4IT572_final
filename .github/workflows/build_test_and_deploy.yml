@@ -124,13 +124,13 @@ jobs:
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > 4IT572-DevOps.pem
           chmod 400 4IT572-DevOps.pem
-          echo "${{ secrets.VAULT_PASSWORD }}" > .vault_pass.txt
+          echo "${{ secrets.VAULT_PASSWORD }}" > .vault_pass
 
       - name: Deploy via Ansible
         env:
           ANSIBLE_HOST_KEY_CHECKING: False
         run: |
-          ansible-playbook ec2_deploy.yml --key-file 4IT572-DevOps.pem --vault-password-file .vault_pass.txt --user ec2-user --verbose
+          ansible-playbook ec2_deploy.yml --key-file 4IT572-DevOps.pem --vault-password-file .vault_pass --user ec2-user --verbose
 
 #      - name: Deploy via Ansible
 #        uses: dawidd6/action-ansible-playbook@v2
