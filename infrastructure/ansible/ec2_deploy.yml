@@ -8,7 +8,7 @@
   tasks:
     - name: Launch EC2 Instance
       amazon.aws.ec2_instance:
-        key_name: ansible_key
+        key_name: 4IT572-DevOps
         instance_type: t2.micro
         image:
           id: ami-0b0dcb5067f052a63
