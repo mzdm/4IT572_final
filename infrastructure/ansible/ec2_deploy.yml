@@ -3,6 +3,8 @@
   connection: local
   collections:
     - amazon.aws
+  vars_files:
+    - group_vars/all
   tasks:
     - name: Launch EC2 Instance
       amazon.aws.ec2_instance:
@@ -15,7 +17,7 @@
         assign_public_ip: yes
         count: 1
         vpc_subnet_id: subnet-02307408fd4f766c1
-        aws_access_key: test
+        aws_access_key: "{{ aws_access_key }}"
         aws_secret_key: "{{ aws_secret_key }}"
         security_token: "{{ session_token }}"
       register: ec2
