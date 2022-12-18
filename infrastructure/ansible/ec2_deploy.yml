@@ -5,7 +5,7 @@
     - amazon.aws
   tasks:
     - name: Launch EC2 Instance
-      ec2:
+      amazon.aws.ec2_instance:
         key_name: 4IT572-DevOps
         instance_type: t2.micro
         image: ami-0b0dcb5067f052a63
