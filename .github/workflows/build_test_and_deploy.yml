@@ -100,9 +100,6 @@ jobs:
 #    needs: [ build ]
     if: ${{ github.ref == 'refs/heads/testing' }}
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: ${{ env.WORKING_DIR_INFRA }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -111,7 +108,7 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: ec2_deploy.yml
-          directory: ./ansible
+          directory: "${{ env.WORKING_DIR_INFRA }}/ansible"
           key: ${{secrets.SSH_PRIVATE_KEY}}
           vault_password: ${{secrets.VAULT_PASSWORD}}
           options: |
