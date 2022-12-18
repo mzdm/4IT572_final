@@ -3,11 +3,11 @@
 s využitím našeho e-shopu, GitHub Actions, Docker a Ansible **sestavit pipeline**.
 
 - [ ] Pipeline bude rozdělena na dvě větve.
-    - [ ] Pokud otevřu pull request z nějaké branche do masteru,
-        - [ ] sestaví se mi eshop,
-        - [ ] otestuje a
-        - [ ] povolí mi mergnout kód do masteru.
-    - [ ] Pokud neprojde, bude merge blokován.
+    - [x] Pokud otevřu pull request z nějaké branche do masteru,
+        - [x] sestaví se mi eshop,
+        - [x] otestuje a
+        - [x] povolí mi mergnout kód do masteru.
+    - [x] Pokud neprojde, bude merge blokován.
     - [ ] V okamžiku merge do masteru se spustí workflow,
         - [ ] které kromě kroků z předchozího scénáře ještě
         - [ ] nasadí eshop pomocí Ansible na EC2.
