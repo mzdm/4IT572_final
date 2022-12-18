@@ -39,7 +39,7 @@
 #      loop: "{{ ec2.instances }}"
 
 - name: Configure EC
-  hosts: launched
+#  hosts: launched
   connection: ssh
   tasks:
     - name: Install git and Docker
