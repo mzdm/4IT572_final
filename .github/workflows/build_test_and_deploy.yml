@@ -104,6 +104,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Install python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.9'
+
+      - name: Install ansible
+        run: pip3 install ansible boto boto3
+
       - name: Deploy via Ansible
         uses: dawidd6/action-ansible-playbook@v2
         with:
