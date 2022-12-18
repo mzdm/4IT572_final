@@ -4,7 +4,7 @@
   collections:
     - amazon.aws
   vars_files:
-    - group_vars/all
+    - group_vars/all/aws.yml
   tasks:
     - name: Launch EC2 Instance
       amazon.aws.ec2_instance:
