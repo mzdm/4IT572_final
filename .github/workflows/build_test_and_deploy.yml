@@ -93,3 +93,26 @@ jobs:
       - name: Run tests
         run: |
           npm run test
+
+  deploy:
+#    needs: [ build, test ]
+#    if: ${{ github.ref == 'refs/heads/master' }}
+#    needs: [ build ]
+    if: ${{ github.ref == 'refs/heads/testing' }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.WORKING_DIR_INFRA }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy via Ansible
+        uses: dawidd6/action-ansible-playbook@v2
+        with:
+          playbook: ec2_deploy.yml
+          directory: ./ansible
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          vault_password: ${{secrets.VAULT_PASSWORD}}
+          options: |
+            --user ec2-user
