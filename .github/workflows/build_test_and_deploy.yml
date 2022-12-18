@@ -123,7 +123,7 @@ jobs:
       - name: Export ssh private key & vault password
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > 4IT572-DevOps.pem
-          chmod 600 4IT572-DevOps.pem
+          chmod 700 4IT572-DevOps.pem
           echo "${{ secrets.VAULT_PASSWORD }}" > .vault_pass
 
       - name: Deploy via Ansible
