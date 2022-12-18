@@ -15,9 +15,9 @@
         assign_public_ip: yes
         count: 1
         vpc_subnet_id: subnet-02307408fd4f766c1
-        aws_access_key: "{{ aws_access_key }}"
-        aws_secret_key: "{{ aws_secret_key }}"
-        security_token: "{{ session_token }}"
+        aws_access_key: ab
+        aws_secret_key: abc
+        security_token: abcd
       register: ec2
 
     - name: Add instance to host group
