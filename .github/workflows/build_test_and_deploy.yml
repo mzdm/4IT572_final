@@ -112,14 +112,20 @@ jobs:
       - name: Install ansible
         run: pip3 install ansible boto boto3
 
+      - name: Export key
+        working-directory: "${{ env.WORKING_DIR_INFRA }}/ansible"
+        run: |
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > .ssh_private_key.pem
+          chmod 400 .ssh_private_key.pem
+
       - name: Deploy via Ansible
         uses: dawidd6/action-ansible-playbook@v2
         with:
           playbook: ec2_deploy.yml
           directory: "${{ env.WORKING_DIR_INFRA }}/ansible"
           requirements: requirements.yml
-          key: ${{secrets.SSH_PRIVATE_KEY}}
           vault_password: ${{secrets.VAULT_PASSWORD}}
           options: |
             --user ec2-user
+            --key-file .ssh_private_key.pem
             --verbose
