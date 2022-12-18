@@ -100,6 +100,9 @@ jobs:
 #    needs: [ build ]
     if: ${{ github.ref == 'refs/heads/testing' }}
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "${{ env.WORKING_DIR_INFRA }}/ansible"
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -112,20 +115,24 @@ jobs:
       - name: Install ansible
         run: pip3 install ansible boto boto3
 
-      - name: Export key
-        working-directory: "${{ env.WORKING_DIR_INFRA }}/ansible"
+      - name: Export ssh private key & vault password
         run: |
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > .ssh_private_key.pem
           chmod 400 .ssh_private_key.pem
+          echo "${{ secrets.VAULT_PASSWORD }}" > .vault_pass.txt
 
       - name: Deploy via Ansible
-        uses: dawidd6/action-ansible-playbook@v2
-        with:
-          playbook: ec2_deploy.yml
-          directory: "${{ env.WORKING_DIR_INFRA }}/ansible"
-          requirements: requirements.yml
-          vault_password: ${{secrets.VAULT_PASSWORD}}
-          options: |
-            --user ec2-user
-            --key-file .ssh_private_key.pem
-            --verbose
+        run: |
+          ansible-playbook ec2_deploy.yml --key-file .ssh_private_key.pem --vault-password-file .vault_pass.txt --user ec2-user --verbose
+
+#      - name: Deploy via Ansible
+#        uses: dawidd6/action-ansible-playbook@v2
+#        with:
+#          playbook: ec2_deploy.yml
+#          directory: "${{ env.WORKING_DIR_INFRA }}/ansible"
+#          requirements: requirements.yml
+#          vault_password: ${{secrets.VAULT_PASSWORD}}
+#          options: |
+#            --user ec2-user
+#            --key-file .ssh_private_key.pem
+#            --verbose
