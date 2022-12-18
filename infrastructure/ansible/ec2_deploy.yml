@@ -47,7 +47,7 @@
           assign_public_ip: yes
         count: 1
         state: "running"
-        instance_tags:
+        tags:
           Name: eshop
         vpc_subnet_id: subnet-02307408fd4f766c1
         aws_access_key: "{{ aws_access_key }}"
